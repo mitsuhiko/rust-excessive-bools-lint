@@ -1,0 +1,9 @@
+[package]
+name = "rust-excessive-bools-lint"
+version = "0.0.1"
+authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
+
+[lib]
+name = "excessive_bools_lint"
+path = "src/lib.rs"
+plugin = true

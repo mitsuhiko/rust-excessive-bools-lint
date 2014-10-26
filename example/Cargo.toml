@@ -1,0 +1,11 @@
+[package]
+name = "lint-example"
+version = "0.1.0"
+authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
+
+[[bin]]
+name = "lint-example"
+path = "example.rs"
+
+[dependencies.rust-excessive-bools-lint]
+path = ".."
