@@ -10,7 +10,9 @@ use rustc::lint::LintPassObject;
 use rustc::plugin::Registry;
 use rustc::lint::{Context, LintPass, LintArray};
 use rustc::middle::def;
+use syntax::codemap::Span;
 use syntax::parse::token;
+use syntax::visit::FnKind;
 
 declare_lint!(EXCESSIVE_BOOL_USAGE, Warn,
               "Warn about exessive use of boolean members.")
@@ -57,6 +59,25 @@ impl LintPass for Pass {
                     Did you want to create a state machine?",
                     bools.len(),
                     bools.connect(", ")).as_slice());
+            for span in spans.iter() {
+                cx.tcx.sess.span_note(*span, "boolean field defined here");
+            }
+        }
+    }
+
+    fn check_fn(&mut self, cx: &Context, _: FnKind, decl: &ast::FnDecl, _: &ast::Block, sp: Span, _: ast::NodeId) {
+        let mut spans = vec![];
+        for arg in decl.inputs.iter() {
+            if node_is_bool(cx, &*arg.ty) {
+                spans.push(cx.tcx.map.span(arg.id));
+            }
+        }
+
+        if spans.len() >= 3 {
+            cx.span_lint(EXCESSIVE_BOOL_USAGE, sp,
+                format!("Funtion contains an excessive number ({}) of bools.  \
+                    Perhaps you should use enumerated arguments?",
+                    spans.len()).as_slice());
             for span in spans.iter() {
                 cx.tcx.sess.span_note(*span, "boolean field defined here");
             }
