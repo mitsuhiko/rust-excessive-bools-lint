@@ -14,8 +14,10 @@ use syntax::codemap::Span;
 use syntax::parse::token;
 use syntax::visit::FnKind;
 
-declare_lint!(EXCESSIVE_BOOL_USAGE, Warn,
-              "Warn about exessive use of boolean members.")
+declare_lint!(EXCESSIVE_BOOL_USAGE_STRUCTS, Warn,
+              "Warn about exessive use of boolean members in structs.")
+declare_lint!(EXCESSIVE_BOOL_USAGE_FUNCS, Warn,
+              "Warn about exessive use of boolean arguments in functions.")
 
 struct Pass;
 
@@ -33,7 +35,7 @@ fn node_is_bool(cx: &Context, ty: &ast::Ty) -> bool {
 
 impl LintPass for Pass {
     fn get_lints(&self) -> LintArray {
-        lint_array!(EXCESSIVE_BOOL_USAGE)
+        lint_array!(EXCESSIVE_BOOL_USAGE_STRUCTS, EXCESSIVE_BOOL_USAGE_FUNCS)
     }
 
     fn check_struct_def(&mut self, cx: &Context, def: &ast::StructDef,
@@ -54,7 +56,7 @@ impl LintPass for Pass {
         }
 
         if bools.len() >= 3 {
-            cx.span_lint(EXCESSIVE_BOOL_USAGE, cx.tcx.map.span(id),
+            cx.span_lint(EXCESSIVE_BOOL_USAGE_STRUCTS, cx.tcx.map.span(id),
                 format!("Struct contains an excessive number ({}) of bools ({}).  \
                     Did you want to create a state machine?",
                     bools.len(),
@@ -74,7 +76,7 @@ impl LintPass for Pass {
         }
 
         if spans.len() >= 3 {
-            cx.span_lint(EXCESSIVE_BOOL_USAGE, sp,
+            cx.span_lint(EXCESSIVE_BOOL_USAGE_FUNCS, sp,
                 format!("Funtion contains an excessive number ({}) of bools.  \
                     Perhaps you should use enumerated arguments?",
                     spans.len()).as_slice());
