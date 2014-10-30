@@ -81,7 +81,7 @@ impl LintPass for Pass {
                     Perhaps you should use enumerated arguments?",
                     spans.len()).as_slice());
             for span in spans.iter() {
-                cx.tcx.sess.span_note(*span, "boolean field defined here");
+                cx.tcx.sess.span_note(*span, "boolean argument defined here");
             }
         }
     }
