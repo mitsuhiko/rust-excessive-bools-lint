@@ -1,6 +1,6 @@
 #![feature(macro_rules, plugin_registrar, quote, phase)]
 
-#[phase(plugin,link)]
+#[phase(plugin, link)]
 extern crate syntax;
 #[phase(plugin, link)]
 extern crate rustc;
