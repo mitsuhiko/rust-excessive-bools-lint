@@ -21,4 +21,10 @@ fn main() {
     } else if f.is_doing_stuff {
         println!("The thing is busy");
     }
+
+    lots_of_args("hello world", true, false, 1, true, false);
+}
+
+fn lots_of_args(foo: &str, bar: bool, baz: bool, not_bool: uint, maybe_bool: bool, quux: bool) {
+    println!("Arguments are {}, {}, {}, {}, {}, {}", foo, bar, baz, not_bool, maybe_bool, quux)
 }
