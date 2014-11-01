@@ -39,7 +39,7 @@ impl LintPass for Pass {
     }
 
     fn check_struct_def(&mut self, cx: &Context, def: &ast::StructDef,
-            _i: ast::Ident, _gen: &ast::Generics, id: ast::NodeId) {
+            _: ast::Ident, _: &ast::Generics, id: ast::NodeId) {
         let mut bools = vec![];
         let mut spans = vec![];
 
@@ -67,7 +67,8 @@ impl LintPass for Pass {
         }
     }
 
-    fn check_fn(&mut self, cx: &Context, _: FnKind, decl: &ast::FnDecl, _: &ast::Block, sp: Span, _: ast::NodeId) {
+    fn check_fn(&mut self, cx: &Context, _: FnKind, decl: &ast::FnDecl,
+            _: &ast::Block, sp: Span, _: ast::NodeId) {
         let mut spans = vec![];
         for arg in decl.inputs.iter() {
             if node_is_bool(cx, &*arg.ty) {
@@ -75,7 +76,7 @@ impl LintPass for Pass {
             }
         }
 
-        if spans.len() >= 3 {
+        if spans.len() > 1 {
             cx.span_lint(EXCESSIVE_BOOL_USAGE_FUNCS, sp,
                 format!("Funtion contains an excessive number ({}) of bools.  \
                     Perhaps you should use enumerated arguments?",
