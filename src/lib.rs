@@ -24,7 +24,7 @@ struct Pass;
 fn node_is_bool(cx: &Context, ty: &ast::Ty) -> bool {
     match ty.node {
         ast::TyPath(_, _, id) => {
-            match cx.tcx.def_map.borrow().get_copy(&id) {
+            match cx.tcx.def_map.borrow()[id].clone() {
                 def::DefPrimTy(ast::TyBool) => true,
                 _ => false,
             }
