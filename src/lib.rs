@@ -19,7 +19,7 @@ declare_lint!(EXCESSIVE_BOOL_USAGE_STRUCTS, Warn,
 declare_lint!(EXCESSIVE_BOOL_USAGE_FUNCS, Warn,
               "Warn about exessive use of boolean arguments in functions.")
 
-struct Pass;
+pub struct Pass;
 
 fn node_is_bool(cx: &Context, ty: &ast::Ty) -> bool {
     match ty.node {
